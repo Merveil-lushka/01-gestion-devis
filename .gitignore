@@ -1,0 +1,38 @@
+# Dépendances
+node_modules/
+.pnp
+.pnp.js
+
+# Variables d'environnement
+.env
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+.vite/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / éditeur
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Stockage local (JAMAIS dans Git)
+storage/
+uploads/
+backend/uploads/
+sync-agent/data/
+*.pdf
+
+# Docker
+docker-compose.override.yml
+
+# Sauvegardes locales
+*.tar.gz

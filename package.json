@@ -1,0 +1,19 @@
+{
+  "name": "gestion-devis",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PWA de gestion des devis et BAT",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "sync-agent"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "backup": "bash scripts/backup.sh"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
