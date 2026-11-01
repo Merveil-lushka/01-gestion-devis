@@ -1,0 +1,27 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: gestion-devis-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: gestion-devis
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: gestion-devis-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
