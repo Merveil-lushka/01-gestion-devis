@@ -1,0 +1,200 @@
+.dashboard-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- HEADER --- */
+.dashboard-header {
+  background-color: var(--bg-card);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-left h1 {
+  color: var(--primary-blue);
+  font-size: 1.5rem;
+}
+
+.user-badge {
+  background-color: var(--border-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-icon {
+  background: none;
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--text-main);
+}
+
+.btn-logout {
+  background-color: var(--secondary-red);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-logout:hover {
+  background-color: var(--secondary-red-hover);
+}
+
+/* --- MAIN CONTENT --- */
+.dashboard-main {
+  padding: 2rem;
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.main-header h2 {
+  color: var(--text-main);
+}
+
+.btn-primary {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+.btn-primary:hover {
+  background-color: var(--primary-blue-hover);
+}
+
+/* --- GRILLE DE CARTES --- */
+.devis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.devis-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.devis-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  height: 150px;
+  background-color: var(--border-color);
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.card-header h3 {
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-green {
+  background-color: #dcfce7;
+  color: #166534;
+}
+.badge-orange {
+  background-color: #ffedd5;
+  color: #9a3412;
+}
+
+.client-name {
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.chantier-name {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.publish-status.published {
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+.error-text {
+  color: var(--secondary-red);
+  font-weight: bold;
+}
