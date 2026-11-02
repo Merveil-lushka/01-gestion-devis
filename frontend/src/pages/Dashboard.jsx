@@ -14,23 +14,59 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Récupération des devis au chargement de la page
-  useEffect(() => {
-    const fetchDevis = async () => {
-      try {
-        const res = await axios.get('http://localhost:3000/api/devis', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setDevisList(res.data);
-      } catch (err) {
-        setError('Erreur lors du chargement des devis');
-      } finally {
-        setLoading(false);
-      }
-    };
+  // États pour la recherche et le filtre
+  const [search, setSearch] = useState('');
+  const [filtreStatut, setFiltreStatut] = useState('');
 
-    fetchDevis();
-  }, [token]);
+  // Fonction pour charger les devis (avec les filtres)
+  const fetchDevis = async () => {
+    setLoading(true);
+    try {
+      // On construit l'URL avec les paramètres de recherche
+      const url = `http://localhost:3000/api/devis?search=${search}&statut=${filtreStatut}`;
+      const res = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setDevisList(res.data);
+    } catch (err) {
+      setError('Erreur lors du chargement des devis');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Recharge les devis quand la recherche ou le filtre change
+  useEffect(() => {
+    // Un petit délai (debounce) pour ne pas spammer l'API à chaque lettre tapée
+    const timer = setTimeout(() => {
+      fetchDevis();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search, filtreStatut, token]);
+
+  // --- ACTIONS ---
+  const handleTogglePublish = async (id) => {
+    try {
+      await axios.patch(`http://localhost:3000/api/devis/${id}/publish`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchDevis(); // Recharge la liste pour voir le changement
+    } catch (err) {
+      alert("Erreur lors de la publication");
+    }
+  };
+
+  const handleToggleStatus = async (id, currentStatut) => {
+    const newStatut = currentStatut === 'termine' ? 'en_cours' : 'termine';
+    try {
+      await axios.patch(`http://localhost:3000/api/devis/${id}/status`, { statut: newStatut }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchDevis();
+    } catch (err) {
+      alert("Erreur lors du changement de statut");
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -39,7 +75,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      {/* BARRE DE NAVIGATION */}
       <header className="dashboard-header">
         <div className="header-left">
           <h1>Gestion Devis</h1>
@@ -49,31 +84,59 @@ const Dashboard = () => {
           <button onClick={toggleTheme} className="btn-icon">
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
-          <button onClick={handleLogout} className="btn-logout">
-            Déconnexion
+          <button onClick={handleLogout} className="btn-logout">Déconnexion</button>
+        </div>
+            <div className="header-right">
+          {user?.role === 'admin' && (
+            <button onClick={() => navigate('/admin/users')} className="btn-secondary">
+              👥 Gérer les comptes
+            </button>
+          )}
+          <button onClick={toggleTheme} className="btn-icon">
+            {theme === 'light' ? '🌙' : '☀️'}
           </button>
+          <button onClick={handleLogout} className="btn-logout">Déconnexion</button>
         </div>
       </header>
 
-      {/* CONTENU PRINCIPAL */}
       <main className="dashboard-main">
         <div className="main-header">
           <h2>Liste des devis</h2>
-          <button className="btn-primary">+ Nouveau devis</button>
+          {(user?.role === 'admin' || user?.role === 'secretaire') && (
+            <button className="btn-primary">+ Nouveau devis</button>
+          )}
         </div>
 
-        {loading && <p>Chargement des devis...</p>}
+        {/* BARRE D'OUTILS (Recherche et Filtres) */}
+        <div className="toolbar">
+          <input 
+            type="text" 
+            placeholder="Rechercher par numéro, client ou chantier..." 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
+          <select 
+            value={filtreStatut} 
+            onChange={(e) => setFiltreStatut(e.target.value)}
+            className="filter-select"
+          >
+            <option value="">Tous les statuts</option>
+            <option value="en_cours">En cours</option>
+            <option value="termine">Terminé</option>
+          </select>
+        </div>
+
+        {loading && <p className="loading-text">Chargement...</p>}
         {error && <p className="error-text">{error}</p>}
 
-        {/* GRILLE DE CARTES DEVIS */}
         <div className="devis-grid">
           {devisList.length === 0 && !loading && (
-            <p>Aucun devis trouvé pour le moment.</p>
+            <p>Aucun devis trouvé.</p>
           )}
 
           {devisList.map((devis) => (
             <div key={devis._id} className="devis-card">
-              {/* Image de profil */}
               <div className="card-image">
                 <img 
                   src={`http://localhost:3000/${devis.photoProfil}`} 
@@ -82,7 +145,6 @@ const Dashboard = () => {
                 />
               </div>
 
-              {/* Infos principales */}
               <div className="card-content">
                 <div className="card-header">
                   <h3>{devis.numeroDevis}</h3>
@@ -100,6 +162,24 @@ const Dashboard = () => {
                     {devis.isPublished ? '🌐 Publié' : '🔒 Privé'}
                   </span>
                 </div>
+
+                {/* BOUTONS D'ACTION (Visibles uniquement pour Admin/Secrétaire) */}
+                {(user?.role === 'admin' || user?.role === 'secretaire') && (
+                  <div className="card-actions">
+                    <button 
+                      onClick={() => handleToggleStatus(devis._id, devis.statut)}
+                      className="btn-action btn-status"
+                    >
+                      {devis.statut === 'termine' ? 'Rouvrir' : 'Clôturer'}
+                    </button>
+                    <button 
+                      onClick={() => handleTogglePublish(devis._id)}
+                      className={`btn-action ${devis.isPublished ? 'btn-unpublish' : 'btn-publish'}`}
+                    >
+                      {devis.isPublished ? 'Dépublier' : 'Publier'}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}

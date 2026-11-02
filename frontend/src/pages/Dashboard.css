@@ -198,3 +198,95 @@
   color: var(--secondary-red);
   font-weight: bold;
 }
+
+/* --- BARRE D'OUTILS (Recherche & Filtres) --- */
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  font-size: 1rem;
+  outline: none;
+}
+.search-input:focus {
+  border-color: var(--primary-blue);
+}
+
+.filter-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.loading-text {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* --- BOUTONS D'ACTION SUR LES CARTES --- */
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-action {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-action:hover {
+  opacity: 0.8;
+}
+
+.btn-status {
+  background-color: var(--border-color);
+  color: var(--text-main);
+}
+
+.btn-publish {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+.btn-unpublish {
+  background-color: var(--secondary-red);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-secondary:hover {
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+}

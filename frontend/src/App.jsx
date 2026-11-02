@@ -3,13 +3,18 @@ import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import AdminUsers from './pages/AdminUsers'; // <-- NOUVEAU
 
-// Composant pour protéger les routes (si pas connecté, on renvoie au login)
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  if (!token) return <Navigate to="/login" replace />;
+  return children;
+};
+
+// Route réservée à l'admin
+const AdminRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (user?.role !== 'admin') return <Navigate to="/" replace />;
   return children;
 };
 
@@ -21,15 +26,20 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             
-            {/* Route protégée : accessible uniquement si connecté */}
-            <Route 
-              path="/" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+
+            {/* Nouvelle route Admin */}
+            <Route path="/admin/users" element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminUsers />
+                </AdminRoute>
+              </ProtectedRoute>
+            } />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
