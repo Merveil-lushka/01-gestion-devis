@@ -1,32 +1,40 @@
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+
+// Composant pour protéger les routes (si pas connecté, on renvoie au login)
+const ProtectedRoute = ({ children }) => {
+  const { token } = useAuth();
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Gestion Devis</h1>
-        <p className="app-subtitle">PWA de gestion des devis et BAT</p>
-      </header>
-
-      <main className="app-main">
-        <section className="app-card">
-          <h2>Bienvenue</h2>
-          <p>
-            Cette application permet de centraliser les devis, retrouver les BAT
-            PDF et gérer les autorisations d'accès.
-          </p>
-          <p className="app-status">
-            <span className="status-dot"></span>
-            Étape 1.2.c — Template nettoyé
-          </p>
-        </section>
-      </main>
-
-      <footer className="app-footer">
-        <p>v0.1.0 — Projet 01-gestion-devis</p>
-      </footer>
-    </div>
-  )
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            
+            {/* Route protégée : accessible uniquement si connecté */}
+            <Route 
+              path="/" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
