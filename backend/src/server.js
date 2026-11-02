@@ -5,6 +5,7 @@ import { connectDB } from './config/db.js';
 import healthRoutes from './routes/health.js';
 import authRoutes from './routes/auth.js'; // <-- NOUVEAU
 import devisRoutes from './routes/devis.js'; // <-- NOUVEAU
+import userRoutes from './routes/userRoutes.js'; // <-- NOUVEAU
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use('/uploads', express.static('uploads')); // <-- NOUVEAU
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/devis', devisRoutes); // <-- NOUVEAU
+app.use('/api/users', userRoutes); // <-- NOUVEAU
 
 // Démarrage
 const startServer = async () => {
