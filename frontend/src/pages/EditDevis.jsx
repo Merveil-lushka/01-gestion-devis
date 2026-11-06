@@ -28,7 +28,7 @@ const EditDevis = () => {
   useEffect(() => {
     const fetchDevis = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/devis', {
+        const res = await axios.get('https://zero1-gestion-devis.onrender.com/api/devis', {
           headers: { Authorization: `Bearer ${token}` }
         });
         const currentDevis = res.data.find(d => d._id === id);
@@ -71,7 +71,7 @@ const EditDevis = () => {
     if (photoProfil) data.append('photoProfil', photoProfil);
 
     try {
-      await axios.put(`http://localhost:3000/api/devis/${id}`, data, {
+      await axios.put(`https://zero1-gestion-devis.onrender.com/api/devis/${id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

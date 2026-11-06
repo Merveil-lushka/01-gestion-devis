@@ -48,7 +48,7 @@ const NewDevis = () => {
     data.append('photoProfil', photoProfil);
 
     try {
-      await axios.post('http://localhost:3000/api/devis', data, {
+      await axios.post('https://zero1-gestion-devis.onrender.com/api/devis', data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

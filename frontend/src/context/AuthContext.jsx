@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   // Si on a un token au démarrage, on récupère les infos de l'utilisateur
   useEffect(() => {
     if (token) {
-      axios.get('http://localhost:3000/api/auth/me', {
+      axios.get('https://zero1-gestion-devis.onrender.com/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => {
         setUser(res.data);
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
-    const res = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+    const res = await axios.post('https://zero1-gestion-devis.onrender.com/api/auth/login', { email, password });
     localStorage.setItem('token', res.data.token);
     setToken(res.data.token);
     setUser(res.data);

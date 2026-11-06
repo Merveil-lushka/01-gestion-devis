@@ -19,7 +19,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/users', {
+      const res = await axios.get('https://zero1-gestion-devis.onrender.com/api/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data);
@@ -37,7 +37,7 @@ const AdminUsers = () => {
   // Activer / Désactiver un compte
   const handleToggleStatus = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/api/users/${id}/status`, {}, {
+      await axios.patch(`https://zero1-gestion-devis.onrender.com/api/users/${id}/status`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchUsers();
@@ -52,7 +52,7 @@ const AdminUsers = () => {
     if (!newPassword) return;
 
     try {
-      await axios.patch(`http://localhost:3000/api/users/${id}/reset-password`, { newPassword }, {
+      await axios.patch(`https://zero1-gestion-devis.onrender.com/api/users/${id}/reset-password`, { newPassword }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Mot de passe réinitialisé avec succès');
@@ -65,7 +65,7 @@ const AdminUsers = () => {
   const handleCreateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/users', newUser, {
+      await axios.post('https://zero1-gestion-devis.onrender.com/api/users', newUser, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNewUser({ name: '', email: '', password: '', role: 'consultation' });

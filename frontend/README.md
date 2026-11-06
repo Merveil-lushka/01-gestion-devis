@@ -1,16 +1,36 @@
-# React + Vite
+# 01 — Gestion Devis (PWA)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application web progressive (PWA) de gestion des devis et BAT.
 
-Currently, two official plugins are available:
+## 🚀 Fonctionnalités
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Authentification sécurisée (JWT + Bcrypt).
+- Gestion des rôles : Admin, Secrétaire, Technicien, Consultation.
+- Création de devis avec upload de PDF et compression d'image (Sharp).
+- Système de publication (visibilité pour les techniciens).
+- Gestion des statuts (En cours / Terminé).
+- Recherche et filtres.
+- Gestion des comptes utilisateurs par l'admin.
+- Mode Sombre / Clair.
+- Installable sur PC et mobile (PWA).
 
-## React Compiler
+## 🛠️ Stack Technique
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend** : React (Vite) + React Router + Axios + Context API
+- **Backend** : Node.js + Express + Mongoose
+- **Base de données** : MongoDB (via Docker)
+- **Sécurité** : JWT, Bcrypt
+- **Fichiers** : Multer + Sharp
 
-## Expanding the ESLint configuration
+## 💻 Démarrage Rapide
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Prérequis
+
+- Node.js >= 20
+- Docker & Docker Compose
+
+### 2. Installation
+
+```bash
+npm install
+```

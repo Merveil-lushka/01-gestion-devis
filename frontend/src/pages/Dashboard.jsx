@@ -20,7 +20,7 @@ const Dashboard = () => {
   const fetchDevis = async () => {
     setLoading(true);
     try {
-      const url = `http://localhost:3000/api/devis?search=${search}&statut=${filtreStatut}`;
+      const url = `https://zero1-gestion-devis.onrender.com/api/devis?search=${search}&statut=${filtreStatut}`;
       const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -42,7 +42,7 @@ const Dashboard = () => {
   // --- ACTIONS ---
   const handleTogglePublish = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/api/devis/${id}/publish`, {}, {
+      await axios.patch(`https://zero1-gestion-devis.onrender.com/api/devis/${id}/publish`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchDevis();
@@ -54,7 +54,7 @@ const Dashboard = () => {
   const handleToggleStatus = async (id, currentStatut) => {
     const newStatut = currentStatut === 'termine' ? 'en_cours' : 'termine';
     try {
-      await axios.patch(`http://localhost:3000/api/devis/${id}/status`, { statut: newStatut }, {
+      await axios.patch(`https://zero1-gestion-devis.onrender.com/api/devis/${id}/status`, { statut: newStatut }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchDevis();
@@ -66,7 +66,7 @@ const Dashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce devis ? Cette action est irréversible.")) {
       try {
-        await axios.delete(`http://localhost:3000/api/devis/${id}`, {
+        await axios.delete(`https://zero1-gestion-devis.onrender.com/api/devis/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchDevis(); // Rafraîchit la liste
@@ -167,7 +167,7 @@ const Dashboard = () => {
             <div key={devis._id} className="devis-card">
               <div className="card-image">
                 <img 
-                  src={`http://localhost:3000/${devis.photoProfil}`} 
+                  src={`https://zero1-gestion-devis.onrender.com/${devis.photoProfil}`} 
                   alt="Profil" 
                   onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=Photo'; }}
                 />
@@ -194,7 +194,7 @@ const Dashboard = () => {
                 {/* BOUTONS LIRE / TÉLÉCHARGER (Accessibles à tous ceux qui voient le devis) */}
                 <div className="card-actions" style={{ marginTop: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem' }}>
                   <a 
-                    href={`http://localhost:3000/${devis.fichierPDF}`} 
+                    href={`https://zero1-gestion-devis.onrender.com/${devis.fichierPDF}`} 
                     target="_blank" 
                     rel="noreferrer"
                     className="btn-action btn-view"
@@ -203,7 +203,7 @@ const Dashboard = () => {
                     👁️ Lire
                   </a>
                   <a 
-                    href={`http://localhost:3000/${devis.fichierPDF}`} 
+                    href={`https://zero1-gestion-devis.onrender.com/${devis.fichierPDF}`} 
                     download
                     className="btn-action btn-download"
                     style={{ textAlign: 'center', textDecoration: 'none' }}
