@@ -80,6 +80,11 @@ const Dashboard = () => {
     logout();
     navigate('/login');
   };
+    // --- CALCUL DES STATISTIQUES ---
+  const totalDevis = devisList.length;
+  const devisEnCours = devisList.filter(d => d.statut === 'en_cours').length;
+  const devisTermines = devisList.filter(d => d.statut === 'termine').length;
+  const devisPublies = devisList.filter(d => d.isPublished).length;
 
   return (
     <div className="dashboard-container">
@@ -103,6 +108,25 @@ const Dashboard = () => {
       </header>
 
       <main className="dashboard-main">
+                {/* STATISTIQUES */}
+        <div className="stats-grid">
+          <div className="stat-card">
+            <span className="stat-label">Total des devis</span>
+            <span className="stat-value">{totalDevis}</span>
+          </div>
+          <div className="stat-card stat-orange">
+            <span className="stat-label">En cours</span>
+            <span className="stat-value">{devisEnCours}</span>
+          </div>
+          <div className="stat-card stat-green">
+            <span className="stat-label">Terminés</span>
+            <span className="stat-value">{devisTermines}</span>
+          </div>
+          <div className="stat-card stat-blue">s
+            <span className="stat-label">Publiés (Techniciens)</span>
+            <span className="stat-value">{devisPublies}</span>
+          </div>
+        </div>
         <div className="main-header">
           <h2>Liste des devis</h2>
           {(user?.role === 'admin' || user?.role === 'secretaire') && (

@@ -293,3 +293,45 @@
 
 .btn-view { background-color: #0ea5e9; color: white; }
 .btn-download { background-color: #8b5cf6; color: white; }
+
+/* --- STATISTIQUES --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Couleurs d'accentuation */
+.stat-orange { border-bottom: 4px solid #f97316; }
+.stat-orange .stat-value { color: #f97316; }
+
+.stat-green { border-bottom: 4px solid #22c55e; }
+.stat-green .stat-value { color: #22c55e; }
+
+.stat-blue { border-bottom: 4px solid var(--primary-blue); }
+.stat-blue .stat-value { color: var(--primary-blue); }
