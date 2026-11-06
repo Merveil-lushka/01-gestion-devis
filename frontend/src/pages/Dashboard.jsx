@@ -14,15 +14,12 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // États pour la recherche et le filtre
   const [search, setSearch] = useState('');
   const [filtreStatut, setFiltreStatut] = useState('');
 
-  // Fonction pour charger les devis (avec les filtres)
   const fetchDevis = async () => {
     setLoading(true);
     try {
-      // On construit l'URL avec les paramètres de recherche
       const url = `http://localhost:3000/api/devis?search=${search}&statut=${filtreStatut}`;
       const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` }
@@ -35,9 +32,7 @@ const Dashboard = () => {
     }
   };
 
-  // Recharge les devis quand la recherche ou le filtre change
   useEffect(() => {
-    // Un petit délai (debounce) pour ne pas spammer l'API à chaque lettre tapée
     const timer = setTimeout(() => {
       fetchDevis();
     }, 300);
@@ -50,7 +45,7 @@ const Dashboard = () => {
       await axios.patch(`http://localhost:3000/api/devis/${id}/publish`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      fetchDevis(); // Recharge la liste pour voir le changement
+      fetchDevis();
     } catch (err) {
       alert("Erreur lors de la publication");
     }
@@ -68,6 +63,19 @@ const Dashboard = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce devis ? Cette action est irréversible.")) {
+      try {
+        await axios.delete(`http://localhost:3000/api/devis/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        fetchDevis(); // Rafraîchit la liste
+      } catch (err) {
+        alert("Erreur lors de la suppression");
+      }
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -80,13 +88,8 @@ const Dashboard = () => {
           <h1>Gestion Devis</h1>
           <span className="user-badge">{user?.name} ({user?.role})</span>
         </div>
+        
         <div className="header-right">
-          <button onClick={toggleTheme} className="btn-icon">
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
-          <button onClick={handleLogout} className="btn-logout">Déconnexion</button>
-        </div>
-            <div className="header-right">
           {user?.role === 'admin' && (
             <button onClick={() => navigate('/admin/users')} className="btn-secondary">
               👥 Gérer les comptes
@@ -103,11 +106,12 @@ const Dashboard = () => {
         <div className="main-header">
           <h2>Liste des devis</h2>
           {(user?.role === 'admin' || user?.role === 'secretaire') && (
-            <button className="btn-primary">+ Nouveau devis</button>
+            <button className="btn-primary" onClick={() => navigate('/devis/nouveau')}>
+              + Nouveau devis
+            </button>
           )}
         </div>
 
-        {/* BARRE D'OUTILS (Recherche et Filtres) */}
         <div className="toolbar">
           <input 
             type="text" 
@@ -163,22 +167,47 @@ const Dashboard = () => {
                   </span>
                 </div>
 
-                {/* BOUTONS D'ACTION (Visibles uniquement pour Admin/Secrétaire) */}
+                {/* BOUTONS LIRE / TÉLÉCHARGER (Accessibles à tous ceux qui voient le devis) */}
+                <div className="card-actions" style={{ marginTop: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem' }}>
+                  <a 
+                    href={`http://localhost:3000/${devis.fichierPDF}`} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="btn-action btn-view"
+                    style={{ textAlign: 'center', textDecoration: 'none' }}
+                  >
+                    👁️ Lire
+                  </a>
+                  <a 
+                    href={`http://localhost:3000/${devis.fichierPDF}`} 
+                    download
+                    className="btn-action btn-download"
+                    style={{ textAlign: 'center', textDecoration: 'none' }}
+                  >
+                    ⬇️ Télécharger
+                  </a>
+                </div>
+
+                {/* BOUTONS ADMIN/SECRÉTAIRE (Statut, Modifier, Supprimer) */}
                 {(user?.role === 'admin' || user?.role === 'secretaire') && (
-                  <div className="card-actions">
-                    <button 
-                      onClick={() => handleToggleStatus(devis._id, devis.statut)}
-                      className="btn-action btn-status"
-                    >
-                      {devis.statut === 'termine' ? 'Rouvrir' : 'Clôturer'}
-                    </button>
-                    <button 
-                      onClick={() => handleTogglePublish(devis._id)}
-                      className={`btn-action ${devis.isPublished ? 'btn-unpublish' : 'btn-publish'}`}
-                    >
-                      {devis.isPublished ? 'Dépublier' : 'Publier'}
-                    </button>
-                  </div>
+                  <>
+                    <div className="card-actions" style={{ marginTop: '0.5rem', borderTop: 'none', paddingTop: '0' }}>
+                      <button onClick={() => handleToggleStatus(devis._id, devis.statut)} className="btn-action btn-status">
+                        {devis.statut === 'termine' ? 'Rouvrir' : 'Clôturer'}
+                      </button>
+                      <button onClick={() => handleTogglePublish(devis._id)} className={`btn-action ${devis.isPublished ? 'btn-unpublish' : 'btn-publish'}`}>
+                        {devis.isPublished ? 'Dépublier' : 'Publier'}
+                      </button>
+                    </div>
+                    <div className="card-actions" style={{ marginTop: '0.5rem', borderTop: 'none', paddingTop: '0' }}>
+                      <button onClick={() => navigate(`/devis/${devis._id}/modifier`)} className="btn-action btn-status">
+                        ✏️ Modifier
+                      </button>
+                      <button onClick={() => handleDelete(devis._id)} className="btn-action btn-unpublish">
+                        🗑️ Supprimer
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
             </div>

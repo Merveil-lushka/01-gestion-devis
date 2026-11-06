@@ -156,3 +156,77 @@ export const updateStatus = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur', error: error.message });
   }
 };
+
+// @desc    Supprimer un devis (et ses fichiers)
+// @route   DELETE /api/devis/:id
+// @access  Privé (Admin, Secrétaire)
+export const deleteDevis = async (req, res) => {
+  try {
+    const devis = await Devis.findById(req.params.id);
+    if (!devis) return res.status(404).json({ message: 'Devis non trouvé' });
+
+    // 1. Supprimer les fichiers physiques du serveur
+    if (devis.fichierPDF && fs.existsSync(devis.fichierPDF)) {
+      fs.unlinkSync(devis.fichierPDF);
+    }
+    if (devis.photoProfil && fs.existsSync(devis.photoProfil)) {
+      fs.unlinkSync(devis.photoProfil);
+    }
+
+    // 2. Supprimer de la base de données
+    await Devis.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Devis supprimé avec succès' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la suppression', error: error.message });
+  }
+};
+
+// @desc    Modifier un devis
+// @route   PUT /api/devis/:id
+// @access  Privé (Admin, Secrétaire)
+export const updateDevis = async (req, res) => {
+  try {
+    const devis = await Devis.findById(req.params.id);
+    if (!devis) return res.status(404).json({ message: 'Devis non trouvé' });
+
+    const { numeroDevis, nomClient, nomChantier, dateDevis, note } = req.body;
+
+    // Mise à jour des champs texte
+    devis.numeroDevis = numeroDevis || devis.numeroDevis;
+    devis.nomClient = nomClient || devis.nomClient;
+    devis.nomChantier = nomChantier || devis.nomChantier;
+    devis.dateDevis = dateDevis || devis.dateDevis;
+    if (note !== undefined) devis.note = note;
+
+    // Si on remplace le PDF
+    if (req.files && req.files.fichierPDF) {
+      if (fs.existsSync(devis.fichierPDF)) fs.unlinkSync(devis.fichierPDF); // Supprime l'ancien
+      devis.fichierPDF = req.files.fichierPDF[0].path.replace(/\\/g, '/');
+    }
+
+    // Si on remplace la photo (avec compression)
+    if (req.files && req.files.photoProfil) {
+      if (fs.existsSync(devis.photoProfil)) fs.unlinkSync(devis.photoProfil); // Supprime l'ancienne
+      
+      const photoFile = req.files.photoProfil[0];
+      const compressedName = `compressed-${Date.now()}.webp`;
+      const compressedPath = path.join('uploads', compressedName);
+
+      await sharp(photoFile.path)
+        .resize(400, 400, { fit: 'inside', withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toFile(compressedPath);
+
+      fs.unlinkSync(photoFile.path); // Supprime l'original
+      devis.photoProfil = compressedPath.replace(/\\/g, '/');
+    }
+
+    const updatedDevis = await devis.save();
+    res.json(updatedDevis);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Ce numéro de devis existe déjà' });
+    }
+    res.status(500).json({ message: 'Erreur lors de la modification', error: error.message });
+  }
+};

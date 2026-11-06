@@ -290,3 +290,6 @@
   border-color: var(--primary-blue);
   color: var(--primary-blue);
 }
+
+.btn-view { background-color: #0ea5e9; color: white; }
+.btn-download { background-color: #8b5cf6; color: white; }
