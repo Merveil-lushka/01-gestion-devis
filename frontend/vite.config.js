@@ -6,15 +6,16 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'autoUpdate', // Force la mise à jour automatique
       includeAssets: ['favicon.svg', 'icons.svg'],
       manifest: {
-        name: 'Gestion Devis PWA',
+        name: 'Gestion Devis',
         short_name: 'Devis',
         description: 'Application de gestion des devis et BAT',
-        theme_color: '#2563eb',
-        background_color: '#ffffff',
-        display: 'standalone', // Mode application (sans la barre d'adresse)
+        theme_color: '#111827',
+        background_color: '#f3f4f6',
+        display: 'standalone', // Mode application native
+        orientation: 'portrait', // Bloque le mode paysage (force le format téléphone)
         icons: [
           {
             src: 'icons/icon-192x192.png',
