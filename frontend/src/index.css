@@ -1,38 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --primary-blue: #111827; /* On passe le bleu en noir profond pour le style de l'image */
-  --primary-blue-hover: #374151;
-  --secondary-red: #ef4444;
-  --secondary-red-hover: #dc2626;
-  
-  --bg-main: #f3f4f6; /* Gris très clair */
-  --bg-card: #ffffff;
-  --text-main: #111827;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
-  --input-bg: #f9fafb;
+  --primary-blue: #2563EB;
+  --primary-blue-hover: #1D4ED8;
+  --secondary-red: #DC2626;
+  --secondary-red-hover: #B91C1C;
+
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #475569;
+  --border-color: #E2E8F0;
+  --input-bg: #FFFFFF;
 }
 
 [data-theme="dark"] {
-  --primary-blue: #f9fafb;
-  --primary-blue-hover: #e5e7eb;
-  --bg-main: #111827;
-  --bg-card: #1f2937;
-  --text-main: #f9fafb;
-  --text-muted: #9ca3af;
-  --border-color: #374151;
-  --input-bg: #111827;
+  --primary-blue: #3B82F6;
+  --primary-blue-hover: #60A5FA;
+  --bg-main: #0F172A;
+  --bg-card: #1E293B;
+  --text-main: #F1F5F9;
+  --text-muted: #94A3B8;
+  --border-color: #334155;
+  --input-bg: #0F172A;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
