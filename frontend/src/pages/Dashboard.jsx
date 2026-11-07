@@ -69,7 +69,7 @@ const Dashboard = () => {
         await axios.delete(`https://zero1-gestion-devis.onrender.com/api/devis/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        fetchDevis(); // Rafraîchit la liste
+        fetchDevis();
       } catch (err) {
         alert("Erreur lors de la suppression");
       }
@@ -80,7 +80,8 @@ const Dashboard = () => {
     logout();
     navigate('/login');
   };
-    // --- CALCUL DES STATISTIQUES ---
+
+  // --- CALCUL DES STATISTIQUES ---
   const totalDevis = devisList.length;
   const devisEnCours = devisList.filter(d => d.statut === 'en_cours').length;
   const devisTermines = devisList.filter(d => d.statut === 'termine').length;
@@ -108,7 +109,7 @@ const Dashboard = () => {
       </header>
 
       <main className="dashboard-main">
-                {/* STATISTIQUES */}
+        {/* STATISTIQUES */}
         <div className="stats-grid">
           <div className="stat-card">
             <span className="stat-label">Total des devis</span>
@@ -122,11 +123,12 @@ const Dashboard = () => {
             <span className="stat-label">Terminés</span>
             <span className="stat-value">{devisTermines}</span>
           </div>
-          <div className="stat-card stat-blue">s
-            <span className="stat-label">Publiés (Techniciens)</span>
+          <div className="stat-card stat-blue">
+            <span className="stat-label">Publiés</span>
             <span className="stat-value">{devisPublies}</span>
           </div>
         </div>
+
         <div className="main-header">
           <h2>Liste des devis</h2>
           {(user?.role === 'admin' || user?.role === 'secretaire') && (
@@ -191,7 +193,7 @@ const Dashboard = () => {
                   </span>
                 </div>
 
-                {/* BOUTONS LIRE / TÉLÉCHARGER (Accessibles à tous ceux qui voient le devis) */}
+                {/* BOUTONS LIRE / TÉLÉCHARGER */}
                 <div className="card-actions" style={{ marginTop: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem' }}>
                   <a 
                     href={`https://zero1-gestion-devis.onrender.com/${devis.fichierPDF}`} 
@@ -212,7 +214,7 @@ const Dashboard = () => {
                   </a>
                 </div>
 
-                {/* BOUTONS ADMIN/SECRÉTAIRE (Statut, Modifier, Supprimer) */}
+                {/* BOUTONS ADMIN/SECRÉTAIRE */}
                 {(user?.role === 'admin' || user?.role === 'secretaire') && (
                   <>
                     <div className="card-actions" style={{ marginTop: '0.5rem', borderTop: 'none', paddingTop: '0' }}>
