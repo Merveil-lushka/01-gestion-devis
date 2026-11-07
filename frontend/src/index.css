@@ -1,51 +1,26 @@
-/* Reset CSS minimal */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: #f9fafb;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#root {
-  height: 100%;
-}
-
-/* Variables globales pour le thème CLAIR (par défaut) */
 :root {
-  --primary-blue: #2563eb;
-  --primary-blue-hover: #1d4ed8;
-  --secondary-red: #dc2626;
-  --secondary-red-hover: #b91c1c;
+  --primary-blue: #111827; /* On passe le bleu en noir profond pour le style de l'image */
+  --primary-blue-hover: #374151;
+  --secondary-red: #ef4444;
+  --secondary-red-hover: #dc2626;
   
-  --bg-main: #f8fafc;
+  --bg-main: #f3f4f6; /* Gris très clair */
   --bg-card: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  --input-bg: #ffffff;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --input-bg: #f9fafb;
 }
 
-/* Variables globales pour le thème SOMBRE */
 [data-theme="dark"] {
-  --bg-main: #0f172a;
-  --bg-card: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --border-color: #334155;
-  --input-bg: #0f172a;
+  --primary-blue: #f9fafb;
+  --primary-blue-hover: #e5e7eb;
+  --bg-main: #111827;
+  --bg-card: #1f2937;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
+  --input-bg: #111827;
 }
 
 * {
@@ -56,7 +31,7 @@ body {
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   min-height: 100vh;
