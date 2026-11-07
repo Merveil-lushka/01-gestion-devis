@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import { Moon, Sun } from 'lucide-react';
 import './Login.css';
 
 const Login = () => {
@@ -21,7 +22,7 @@ const Login = () => {
 
     try {
       await login(email, password);
-      navigate('/'); // Redirection vers le Dashboard si succès
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Erreur de connexion');
     } finally {
@@ -32,7 +33,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <button className="theme-toggle" onClick={toggleTheme}>
-        {theme === 'light' ? '🌙 Mode Sombre' : '☀️ Mode Clair'}
+        {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
       </button>
 
       <div className="login-card">
@@ -43,7 +44,7 @@ const Login = () => {
 
         {error && <div className="login-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
             <input

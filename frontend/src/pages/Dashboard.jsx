@@ -5,20 +5,70 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { 
   Home, PlusSquare, Users, Moon, Sun, LogOut, 
-  Eye, Download, RefreshCw, Globe, Lock, Pencil, Trash2 
+  Eye, Download, RefreshCw, Globe, Lock, Pencil, Trash2, FileText 
 } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  // ... (toute la logique useState, useEffect, fetchDevis, handle... reste identique)
-  // ... (Je ne remets que le JSX pour la clarté, la logique est inchangée)
+  const { user, token, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+
+  const [devisList, setDevisList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  const [filtreStatut, setFiltreStatut] = useState('');
+
+  const fetchDevis = async () => {
+    setLoading(true);
+    try {
+      const url = `https://zero1-gestion-devis.onrender.com/api/devis?search=${search}&statut=${filtreStatut}`;
+      const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+      setDevisList(res.data);
+    } catch (err) {
+      setError('Erreur lors du chargement');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => fetchDevis(), 300);
+    return () => clearTimeout(timer);
+  }, [search, filtreStatut, token]);
+
+  const handleTogglePublish = async (id) => {
+    await axios.patch(`https://zero1-gestion-devis.onrender.com/api/devis/${id}/publish`, {}, { headers: { Authorization: `Bearer ${token}` } });
+    fetchDevis();
+  };
+
+  const handleToggleStatus = async (id, currentStatut) => {
+    const newStatut = currentStatut === 'termine' ? 'en_cours' : 'termine';
+    await axios.patch(`https://zero1-gestion-devis.onrender.com/api/devis/${id}/status`, { statut: newStatut }, { headers: { Authorization: `Bearer ${token}` } });
+    fetchDevis();
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Supprimer ce devis ?")) {
+      await axios.delete(`https://zero1-gestion-devis.onrender.com/api/devis/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      fetchDevis();
+    }
+  };
+
+  const handleLogout = () => { logout(); navigate('/login'); };
+
+  const totalDevis = devisList.length;
+  const devisEnCours = devisList.filter(d => d.statut === 'en_cours').length;
+  const devisTermines = devisList.filter(d => d.statut === 'termine').length;
+  const devisPublies = devisList.filter(d => d.isPublished).length;
 
   return (
     <div className="app-layout">
-      {/* SIDEBAR (Visible uniquement sur PC) */}
+      {/* SIDEBAR PC */}
       <aside className="sidebar desktop-only">
-        <div className="sidebar-brand">Gestion Devis</div>
+        <div className="sidebar-brand">TeamKarmagrippa</div>
         <nav className="sidebar-nav">
           <button className="sidebar-link active"><Home size={20} /> Tableau de bord</button>
           {(user?.role === 'admin' || user?.role === 'secretaire') && (
@@ -36,20 +86,25 @@ const Dashboard = () => {
         </div>
       </aside>
 
-      {/* CONTENU PRINCIPAL */}
+      {/* MAIN CONTENT */}
       <main className="main-content">
-        <header className="top-bar">
+        <header className="top-bar desktop-only">
           <div className="user-greeting">
             <p className="greeting-text">Bonjour,</p>
             <h1 className="user-name">{user?.name}</h1>
           </div>
-          <div className="top-bar-actions desktop-only">
-            {/* Boutons d'action rapide pour PC */}
-          </div>
         </header>
 
         <div className="content-body">
-          {/* CARTE KPI PRINCIPALE */}
+          {/* 🚀 NOUVELLE BANNIÈRE HERO (Image de construction + Dégradé) */}
+          <div className="hero-banner">
+            <div className="hero-overlay">
+              <h1 className="hero-brand">TeamKarmagrippa</h1>
+              <p className="hero-slogan">Gérer et consulter les devis en toute simplicité.</p>
+            </div>
+          </div>
+
+          {/* CARTE KPI NOIRE */}
           <div className="kpi-card">
             <div className="kpi-main">
               <span className="kpi-label">Total des devis</span>
@@ -83,19 +138,27 @@ const Dashboard = () => {
             </select>
           </div>
 
-          {/* LISTE DES DEVIS */}
+          {/* LISTE DES DEVIS (Avec Thumbnail PDF) */}
+          {loading && <p>Chargement...</p>}
+          {error && <p className="text-red">{error}</p>}
+          
           <div className="devis-list">
             {devisList.map((devis) => (
               <div key={devis._id} className="devis-row-card">
                 <div className="row-main-info">
-                  <img src={`https://zero1-gestion-devis.onrender.com/${devis.photoProfil}`} alt="Profil" className="row-avatar" onError={(e) => { e.target.src = 'https://via.placeholder.com/40'; }} />
+                  {/* Thumbnail PDF à la place de l'image ronde */}
+                  <div className="pdf-thumbnail">
+                    <FileText size={20} className="pdf-icon" />
+                    <span className="pdf-label">PDF</span>
+                  </div>
+                  
                   <div className="row-text">
                     <h3>{devis.numeroDevis} <span className={`badge ${devis.statut === 'termine' ? 'badge-green' : 'badge-orange'}`}>{devis.statut === 'termine' ? 'Terminé' : 'En cours'}</span></h3>
                     <p>{devis.nomClient} — {devis.nomChantier}</p>
                   </div>
                 </div>
                 <div className="row-actions">
-                  <a href={`https://zero1-gestion-devis.onrender.com/${devis.fichierPDF}`} target="_blank" rel="noreferrer" className="icon-btn" title="Lire"><Eye size={18} /></a>
+                  <a href={`https://zero1-gestion-devis.onrender.com/${devis.fichierPDF}`} target="_blank" rel="noreferrer" className="icon-btn" title="Lire le PDF"><Eye size={18} /></a>
                   <a href={`https://zero1-gestion-devis.onrender.com/${devis.fichierPDF}`} download className="icon-btn" title="Télécharger"><Download size={18} /></a>
                   {(user?.role === 'admin' || user?.role === 'secretaire') && (
                     <>

@@ -1,92 +1,143 @@
-.new-devis-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+/* Le layout global (.app-layout, .sidebar, .main-content, .top-bar) est géré par Dashboard.css */
+/* On ajoute juste le spécifique au formulaire ici */
+
+.mobile-only {
+  display: none;
 }
 
-.form-card {
-  background-color: var(--bg-card);
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  max-width: 800px;
+@media (max-width: 768px) {
+  .mobile-only { display: flex; align-items: center; }
+  .btn-back { background: none; border: none; color: var(--text-main); margin-right: 0.5rem; cursor: pointer; }
+}
+
+.content-body {
+  padding: 0 2rem 2rem 2rem;
+  max-width: 900px;
   margin: 0 auto;
   width: 100%;
 }
 
-.form-card h2 {
-  color: var(--primary-blue);
+.form-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.alert-error {
+  background: #FEE2E2;
+  color: var(--secondary-red);
+  padding: 1rem;
+  border-radius: 8px;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .devis-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .form-row {
   display: flex;
   gap: 1.5rem;
-  flex-wrap: wrap;
 }
 
 .form-row .form-group {
   flex: 1;
-  min-width: 250px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
   color: var(--text-main);
-  font-weight: 500;
-  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
 
 .form-group input[type="text"],
 .form-group input[type="date"],
-.form-group input[type="email"],
-.form-group input[type="password"],
 .form-group textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  background-color: var(--input-bg);
+  background: var(--bg-main);
   color: var(--text-main);
-  font-size: 1rem;
-  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: var(--primary-blue);
-  outline: none;
+  background: var(--bg-card);
 }
 
-/* Style pour les inputs de type file */
-.form-group input[type="file"] {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: var(--bg-main);
-  border: 1px dashed var(--border-color);
-  border-radius: 8px;
-  cursor: pointer;
+/* UPLOAD FICHIERS */
+.file-upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-main);
   color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.file-upload-box:hover {
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.file-upload-box input {
+  display: none;
+}
+
+.file-upload-box span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.btn-submit {
+  background: var(--text-main);
+  color: var(--bg-card);
+  padding: 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 1rem;
+}
+
+.btn-submit:hover {
+  opacity: 0.9;
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
-  .form-card {
-    padding: 1.5rem;
-  }
-  .form-row {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .form-row .form-group {
-    min-width: 100%;
-  }
-} 
+  .content-body { padding: 0 1rem 100px 1rem; } /* Padding en bas pour la BottomNav */
+  .form-card { padding: 1.5rem; border: none; background: transparent; box-shadow: none; } /* Plus propre sur mobile */
+  .form-row { flex-direction: column; gap: 1.5rem; }
+  .file-upload-box { padding: 1rem; }
+}
