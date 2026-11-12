@@ -8,19 +8,19 @@
   .bottom-nav {
     display: flex !important;
     position: fixed !important;
-    bottom: 1rem !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 1.5rem) !important; /* Prend presque toute la largeur */
-    max-width: 500px !important;
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    max-width: none !important;
     background: var(--bg-card) !important;
     border-radius: 24px !important;
     padding: 0.5rem !important;
-    justify-content: space-between !important; /* Répartit les icônes uniformément */
+    justify-content: space-between !important;
     align-items: center !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     border: 1px solid var(--border-color) !important;
-    z-index: 99999 !important; /* Au-dessus de TOUT */
+    z-index: 99999 !important;
   }
 
   .nav-item {
@@ -29,11 +29,11 @@
     align-items: center !important;
     background: transparent !important;
     border: none !important;
-    padding: 0.5rem 0.1rem !important; /* Réduit l'espace */
+    padding: 0.5rem 0.1rem !important;
     border-radius: 16px !important;
     cursor: pointer !important;
     color: var(--text-muted) !important;
-    flex: 1 !important; /* Chaque bouton prend une part égale de la barre */
+    flex: 1 !important;
   }
 
   .nav-item.active {
@@ -43,9 +43,9 @@
   }
 
   .nav-label {
-    font-size: 0.6rem !important; /* Texte plus petit pour que tout rentre */
+    font-size: 0.6rem !important;
     font-weight: 600 !important;
     margin-top: 0.2rem !important;
-    white-space: nowrap !important; /* Empêche le texte de passer à la ligne */
+    white-space: nowrap !important;
   }
 }
