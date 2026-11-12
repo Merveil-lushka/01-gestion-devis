@@ -5,11 +5,6 @@
   display: none;
 }
 
-@media (max-width: 768px) {
-  .mobile-only { display: flex; align-items: center; }
-  .btn-back { background: none; border: none; color: var(--text-main); margin-right: 0.5rem; cursor: pointer; }
-}
-
 .content-body {
   padding: 0 2rem 2rem 2rem;
   max-width: 900px;
@@ -135,9 +130,21 @@
   cursor: not-allowed;
 }
 
-@media (max-width: 768px) {
-  .content-body { padding: 0 1rem 100px 1rem; } /* Padding en bas pour la BottomNav */
-  .form-card { padding: 1.5rem; border: none; background: transparent; box-shadow: none; } /* Plus propre sur mobile */
+/* --- RESPONSIVE MOBILE INFAILLIBLE (1024px) --- */
+@media (max-width: 1024px) {
+  .mobile-only { display: flex; align-items: center; }
+  .btn-back { background: none; border: none; color: var(--text-main); margin-right: 0.5rem; cursor: pointer; }
+  
+  .content-body { 
+    padding: 0 1rem 100px 1rem !important; 
+    max-width: 100% !important;
+  } 
+  .form-card { 
+    padding: 1.5rem; 
+    border: none; 
+    background: transparent; 
+    box-shadow: none; 
+  } 
   .form-row { flex-direction: column; gap: 1.5rem; }
   .file-upload-box { padding: 1rem; }
 }

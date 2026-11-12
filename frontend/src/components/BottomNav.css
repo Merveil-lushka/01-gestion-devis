@@ -1,31 +1,26 @@
-/* --- CACHÉ SUR PC --- */
-.bottom-nav { 
-  display: none; 
+/* Caché par défaut sur PC */
+.bottom-nav {
+  display: none;
 }
 
-/* --- VISIBLE SUR MOBILE (Jusqu'à 900px) --- */
-@media (max-width: 900px) {
+/* --- MODE MOBILE STANDARD (S'active jusqu'à 1024px) --- */
+@media (max-width: 1024px) {
   .bottom-nav {
-    display: flex !important; /* !important force l'affichage */
+    display: flex !important;
     position: fixed !important;
-    bottom: 1.5rem !important;
+    bottom: 1rem !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 2rem) !important;
-    max-width: 450px !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(10px) !important;
+    width: calc(100% - 1.5rem) !important; /* Prend presque toute la largeur */
+    max-width: 500px !important;
+    background: var(--bg-card) !important;
     border-radius: 24px !important;
     padding: 0.5rem !important;
-    justify-content: space-around !important;
+    justify-content: space-between !important; /* Répartit les icônes uniformément */
     align-items: center !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     border: 1px solid var(--border-color) !important;
-    z-index: 9999 !important; /* Toujours au-dessus de tout */
-  }
-
-  [data-theme="dark"] .bottom-nav {
-    background: rgba(30, 41, 59, 0.95) !important;
+    z-index: 99999 !important; /* Au-dessus de TOUT */
   }
 
   .nav-item {
@@ -34,31 +29,23 @@
     align-items: center !important;
     background: transparent !important;
     border: none !important;
-    padding: 0.6rem 0.2rem !important;
+    padding: 0.5rem 0.1rem !important; /* Réduit l'espace */
     border-radius: 16px !important;
     cursor: pointer !important;
     color: var(--text-muted) !important;
-    transition: all 0.25s ease !important;
-    flex: 1 !important;
+    flex: 1 !important; /* Chaque bouton prend une part égale de la barre */
   }
 
   .nav-item.active {
     background: var(--text-main) !important;
     color: var(--bg-card) !important;
-    transform: translateY(-4px) !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px) !important;
   }
 
-  [data-theme="dark"] .nav-item.active {
-    background: var(--primary-blue) !important;
-    color: white !important;
-  }
-
-  .nav-item.text-red { color: var(--secondary-red) !important; }
-  
   .nav-label {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important; /* Texte plus petit pour que tout rentre */
     font-weight: 600 !important;
     margin-top: 0.2rem !important;
+    white-space: nowrap !important; /* Empêche le texte de passer à la ligne */
   }
 }
