@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import PwaInstallButton from './components/PwaInstallButton';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AdminUsers from './pages/AdminUsers';
@@ -25,6 +26,7 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <BrowserRouter>
+          <PwaInstallButton />
           <Routes>
             {/* Page de connexion */}
             <Route path="/login" element={<Login />} />
